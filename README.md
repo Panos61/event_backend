@@ -6,11 +6,10 @@
 
 [x] Passwords are now stored in the DB in a hashed form.(Bcrypt)
 
-[x] User can, now, create an account.Simple authentication can be done.
+[x] User is able to create an account.Simple authentication can be done.
 
 [x] JWT
 
 ### Future implementations:
 
-`Email Authentication/ Password Change `
- 
+`Email Authentication/ Password Change`
