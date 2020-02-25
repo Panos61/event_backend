@@ -101,7 +101,13 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(createdUser)
 
-	// Simple Username validation
+	// Simple creds validation
+	valErr := utils.ValidateUser(*user, utils.ValidationErrors)
+	if len(valErr) > 0 {
+		log.Fatalln("Wrong Syntax")
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		return
+	}
 
 	//JWT implementation
 	expiresAt := time.Now().Add(time.Minute * 100000).Unix()
