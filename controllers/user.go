@@ -31,10 +31,18 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(user)
 	if err != nil {
 		var resp = map[string]interface{}{"status": false, "message": "Invalid request"}
+		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(resp)
 		return
 	}
 	resp := FindOne(user.Email, user.Password)
+	// Check for duplicates
+	// error := FindOne(user.Email, user.Password)
+	// if error != nil {
+	// 	w.WriteHeader(http.StatusUnauthorized)
+	// 	return
+	// }
+
 	json.NewEncoder(w).Encode(resp)
 }
 
@@ -55,7 +63,7 @@ func FindOne(email, password string) map[string]interface{} {
 	}
 
 	tk := &models.Token{
-		UserID:   user.ID,
+		//UserID:   user.ID,
 		Username: user.Username,
 		Email:    user.Email,
 		StandardClaims: &jwt.StandardClaims{
@@ -113,7 +121,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	expiresAt := time.Now().Add(time.Minute * 100000).Unix()
 
 	tk := &models.Token{
-		Email: user.Email,
+		Username: user.Username,
+		Email:    user.Email,
 		StandardClaims: &jwt.StandardClaims{
 			ExpiresAt: expiresAt,
 		},
