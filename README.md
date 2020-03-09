@@ -12,4 +12,5 @@
 
 ### Future implementations:
 
-`Email Authentication/ Password Change`
+[ ] Two-Factor Authenticator 
+
