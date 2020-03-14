@@ -21,8 +21,9 @@ func main() {
 	//port := os.Getenv("PORT")
 
 	// CORS policy
-	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
-	methods := handlers.AllowedMethods([]string{"GET", "POST", "DELETE"})
+	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization", "X-CSRF-Token", "Accept-Encoding", "Cache-Control",
+		"X-header", "Access-Control-Allow-Methods", "x-access-token"})
+	methods := handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "OPTIONS", "PUT"})
 	origins := handlers.AllowedOrigins([]string{"*"})
 
 	// Handle routes

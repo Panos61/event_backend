@@ -16,10 +16,11 @@ func Handlers() *mux.Router {
 	// Public routes
 	r.HandleFunc("/register", controllers.CreateUser).Methods("POST")
 	r.HandleFunc("/login", controllers.Login).Methods("POST")
-	//r.HandleFunc("/user", controllers.FetchUsers).Methods("GET")
+
 	// Auth routes
 	s := r.PathPrefix("/auth").Subrouter()
 	s.Use(auth.JwtVerify)
+
 	s.HandleFunc("/user", controllers.FetchUsers).Methods("GET")
 	s.HandleFunc("/user/{id}", controllers.GetUser).Methods("GET")
 	s.HandleFunc("/user/{id}", controllers.UpdateUser).Methods("PUT")
@@ -27,7 +28,7 @@ func Handlers() *mux.Router {
 	return r
 }
 
-// CommonMiddleware --Set content-type
+//CommonMiddleware => Set content-type
 // func CommonMiddleware(next http.Handler) http.Handler {
 // 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 // 		w.Header().Add("Content-Type", "application/json")

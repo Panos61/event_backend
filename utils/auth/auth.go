@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"event_backend/models"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -17,9 +18,15 @@ type Exception models.Exception
 func JwtVerify(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		var header = r.Header.Get("x-access-token") //Grab the token from the header
+		var header = r.Header.Get("Authorization") //Grab the token from the header
 
-		header = strings.TrimSpace(header)
+		fmt.Println(header)
+		splitHeader := strings.Split(header, "Bearer ")
+
+		token := splitHeader[1]
+		fmt.Println(token)
+
+		fmt.Println(header)
 
 		if header == "" {
 			//Token is missing, returns with error code 403 Unauthorized
@@ -29,7 +36,7 @@ func JwtVerify(next http.Handler) http.Handler {
 		}
 		tk := &models.Token{}
 
-		_, err := jwt.ParseWithClaims(header, tk, func(token *jwt.Token) (interface{}, error) {
+		_, err := jwt.ParseWithClaims(token, tk, func(token *jwt.Token) (interface{}, error) {
 			return []byte("secret"), nil
 		})
 

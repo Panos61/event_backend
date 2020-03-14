@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"errors"
 	"event_backend/models"
 	"event_backend/utils"
 	"fmt"
@@ -36,12 +37,13 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	resp := FindOne(user.Email, user.Password)
-	// Check for duplicates
-	// error := FindOne(user.Email, user.Password)
-	// if error != nil {
-	// 	w.WriteHeader(http.StatusUnauthorized)
-	// 	return
-	// }
+	//Check for duplicates
+	error := FindOne(user.Email, user.Password)
+	if error != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		fmt.Println("Wrong Credentials")
+		return
+	}
 
 	json.NewEncoder(w).Encode(resp)
 }
@@ -78,7 +80,7 @@ func FindOne(email, password string) map[string]interface{} {
 		fmt.Println(error)
 	}
 
-	var resp = map[string]interface{}{"status": false, "message": "logged in"}
+	var resp = map[string]interface{}{"status": true, "message": "logged in"}
 	resp["token"] = tokenString //Store the token in the response
 	resp["user"] = user
 	return resp
@@ -106,40 +108,48 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	if createdUser.Error != nil {
 		fmt.Println(errMessage)
+		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
-	json.NewEncoder(w).Encode(createdUser)
+	//json.NewEncoder(w).Encode(createdUser)
 
 	// Simple creds validation
 	valErr := utils.ValidateUser(*user, utils.ValidationErrors)
 	if len(valErr) > 0 {
-		log.Fatalln("Wrong Syntax")
-		w.WriteHeader(http.StatusUnprocessableEntity)
+		db.AddError(errors.New("Wrong Validation Syntax"))
+		w.WriteHeader(http.StatusUnauthorized)
 		return
+
 	}
 
-	//JWT implementation
-	expiresAt := time.Now().Add(time.Minute * 100000).Unix()
+	if createdUser.Error == nil && valErr == nil {
 
-	tk := &models.Token{
-		Username: user.Username,
-		Email:    user.Email,
-		StandardClaims: &jwt.StandardClaims{
-			ExpiresAt: expiresAt,
-		},
+		//JWT implementation
+		expiresAt := time.Now().Add(time.Minute * 100000).Unix()
+
+		tk := &models.Token{
+			UserID:   user.ID,
+			Username: user.Username,
+			Email:    user.Email,
+			StandardClaims: &jwt.StandardClaims{
+				ExpiresAt: expiresAt,
+			},
+		}
+
+		token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
+
+		tokenString, err := token.SignedString([]byte("secret"))
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		var resp = map[string]interface{}{"status": true, "message": "logged in"}
+		resp["token"] = tokenString //Store the token in the response
+		resp["user"] = user
+
+		json.NewEncoder(w).Encode(resp)
+
 	}
-
-	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
-
-	tokenString, err := token.SignedString([]byte("secret"))
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	var resp = map[string]interface{}{"status": true, "message": "logged in"}
-	resp["token"] = tokenString //Store the token in the response
-	//resp["user"] = user
-
-	json.NewEncoder(w).Encode(resp)
 }
 
 //FetchUsers function
@@ -179,3 +189,29 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	db.First(&user, id)
 	json.NewEncoder(w).Encode(&user)
 }
+
+// func GetLoggedUser(w http.ResponseWriter, r *http.Request) {
+
+// 	var header = r.Header.Get("Authorization") //Grab the token from the header
+
+// 	fmt.Println(header)
+// 	splitHeader := strings.Split(header, "Bearer ")
+
+// 	tokenJWT := splitHeader[1]
+
+// 	tk := &models.Token{}
+
+// 	_, err := jwt.ParseWithClaims(tokenJWT, tk, func(token *jwt.Token) (interface{}, error) {
+// 		return []byte("secret"), nil
+// 	})
+
+// 	if err != nil {
+// 		w.WriteHeader(http.StatusForbidden)
+
+// 		return
+// 	}
+
+// 	var user models.User
+// 	db.First(&user, tk.UserID)
+// 	json.NewEncoder(w).Encode(&user)
+// }
