@@ -32,10 +32,5 @@ func ValidateUser(user models.User, err []string) []string {
 		err = append(err, "Invalid Password")
 	}
 
-	// Validate Gender
-	if len(user.Gender) == 0 {
-		fmt.Println("Missing Gender")
-	}
-
 	return err
 }

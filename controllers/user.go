@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"errors"
 	"event_backend/models"
 	"event_backend/utils"
 	"fmt"
@@ -116,13 +115,14 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	// Simple creds validation
 	valErr := utils.ValidateUser(*user, utils.ValidationErrors)
 	if len(valErr) > 0 {
-		db.AddError(errors.New("Wrong Validation Syntax"))
+		// db.AddError(errors.New("Wrong Validation Syntax"))
+		fmt.Println("Wrong Val Syntax")
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 
 	}
 
-	if createdUser.Error == nil && valErr == nil {
+	if createdUser.Error == nil {
 
 		//JWT implementation
 		expiresAt := time.Now().Add(time.Minute * 100000).Unix()

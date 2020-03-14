@@ -18,8 +18,6 @@ func main() {
 	}
 	fmt.Println(e)
 
-	//port := os.Getenv("PORT")
-
 	// CORS policy
 	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization", "X-CSRF-Token", "Accept-Encoding", "Cache-Control",
 		"X-header", "Access-Control-Allow-Methods", "x-access-token"})
