@@ -36,13 +36,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	resp := FindOne(user.Email, user.Password)
-	//Check for duplicates
-	error := FindOne(user.Email, user.Password)
-	if error != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		fmt.Println("Wrong Credentials")
-		return
-	}
 
 	json.NewEncoder(w).Encode(resp)
 }
@@ -63,26 +56,34 @@ func FindOne(email, password string) map[string]interface{} {
 		return resp
 	}
 
-	tk := &models.Token{
-		//UserID:   user.ID,
-		Username: user.Username,
-		Email:    user.Email,
-		StandardClaims: &jwt.StandardClaims{
-			ExpiresAt: expiresAt,
-		},
+	// If no login error, generate a token and proceed
+	// else return login error
+	if errf == nil {
+
+		tk := &models.Token{
+			UserID:   user.ID,
+			Username: user.Username,
+			Email:    user.Email,
+			StandardClaims: &jwt.StandardClaims{
+				ExpiresAt: expiresAt,
+			},
+		}
+
+		token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
+
+		tokenString, error := token.SignedString([]byte("secret"))
+		if error != nil {
+			fmt.Println(error)
+		}
+
+		var resp = map[string]interface{}{"status": true, "message": "logged in"}
+		resp["token"] = tokenString //Store the token in the response
+		return resp
+	} else {
+		var resp = map[string]interface{}{"status": false, "message": "login error"}
+		return resp
 	}
 
-	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
-
-	tokenString, error := token.SignedString([]byte("secret"))
-	if error != nil {
-		fmt.Println(error)
-	}
-
-	var resp = map[string]interface{}{"status": true, "message": "logged in"}
-	resp["token"] = tokenString //Store the token in the response
-	resp["user"] = user
-	return resp
 }
 
 //CreateUser function -- create a new user
@@ -110,7 +111,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	//json.NewEncoder(w).Encode(createdUser)
+	json.NewEncoder(w).Encode(createdUser)
 
 	// Simple creds validation
 	valErr := utils.ValidateUser(*user, utils.ValidationErrors)
@@ -121,7 +122,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 
 	}
-
+	// If no errors during registration, give create JWT
 	if createdUser.Error == nil {
 
 		//JWT implementation
@@ -143,19 +144,22 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 			log.Fatalln(err)
 		}
 
-		var resp = map[string]interface{}{"status": true, "message": "logged in"}
+		var resp = map[string]interface{}{"status": true, "message": "Signed up"}
 		resp["token"] = tokenString //Store the token in the response
 		resp["user"] = user
 
 		json.NewEncoder(w).Encode(resp)
 
+	} else {
+		var resp = map[string]interface{}{"status": false, "message": "Registration failed"}
+		json.NewEncoder(w).Encode(resp)
 	}
 }
 
 //FetchUsers function
 func FetchUsers(w http.ResponseWriter, r *http.Request) {
 	var users []models.User
-	db.Preload("auths").Find(&users)
+	db.Preload("auth").Find(&users)
 
 	json.NewEncoder(w).Encode(users)
 }
@@ -190,28 +194,13 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&user)
 }
 
-// func GetLoggedUser(w http.ResponseWriter, r *http.Request) {
+// GetLoggedUser => Gets Logged In User with JWT
+func GetLoggedUser(w http.ResponseWriter, r *http.Request) {
 
-// 	var header = r.Header.Get("Authorization") //Grab the token from the header
+	tk := &models.Token{}
 
-// 	fmt.Println(header)
-// 	splitHeader := strings.Split(header, "Bearer ")
+	var user models.User
+	db.First(&user, tk.Email)
+	json.NewEncoder(w).Encode(&user)
 
-// 	tokenJWT := splitHeader[1]
-
-// 	tk := &models.Token{}
-
-// 	_, err := jwt.ParseWithClaims(tokenJWT, tk, func(token *jwt.Token) (interface{}, error) {
-// 		return []byte("secret"), nil
-// 	})
-
-// 	if err != nil {
-// 		w.WriteHeader(http.StatusForbidden)
-
-// 		return
-// 	}
-
-// 	var user models.User
-// 	db.First(&user, tk.UserID)
-// 	json.NewEncoder(w).Encode(&user)
-// }
+}
