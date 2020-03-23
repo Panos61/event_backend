@@ -9,7 +9,8 @@ import (
 	"net/http"
 	"time"
 
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go"
+
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -35,6 +36,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(resp)
 		return
 	}
+
+	// Stores user successful login into resp var
 	resp := FindOne(user.Email, user.Password)
 
 	json.NewEncoder(w).Encode(resp)
@@ -77,6 +80,7 @@ func FindOne(email, password string) map[string]interface{} {
 		}
 
 		var resp = map[string]interface{}{"status": true, "message": "logged in"}
+		resp["user"] = user
 		resp["token"] = tokenString //Store the token in the response
 		return resp
 	} else {
@@ -111,7 +115,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	json.NewEncoder(w).Encode(createdUser)
+	//json.NewEncoder(w).Encode(createdUser)
 
 	// Simple creds validation
 	valErr := utils.ValidateUser(*user, utils.ValidationErrors)
@@ -197,10 +201,11 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 // GetLoggedUser => Gets Logged In User with JWT
 func GetLoggedUser(w http.ResponseWriter, r *http.Request) {
 
-	tk := &models.Token{}
+	//tk := models.Token{}
 
 	var user models.User
-	db.First(&user, tk.Email)
+	db.First(&user)
+
 	json.NewEncoder(w).Encode(&user)
 
 }

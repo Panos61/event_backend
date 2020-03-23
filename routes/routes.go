@@ -2,6 +2,7 @@ package routes
 
 import (
 	"event_backend/controllers"
+	"event_backend/profile"
 	"event_backend/utils/auth"
 
 	"github.com/gorilla/mux"
@@ -20,6 +21,10 @@ func Handlers() *mux.Router {
 	// Auth routes
 	s := r.PathPrefix("/auth").Subrouter()
 	s.Use(auth.JwtVerify)
+
+	// Profile Routes
+	r.HandleFunc("/profile", profile.PostProfile).Methods("POST")
+	r.HandleFunc("/profile", profile.FetchProfile).Methods("GET")
 
 	//s.HandleFunc("/user", controllers.FetchUsers).Methods("GET")
 	s.HandleFunc("/user/{id}", controllers.GetUser).Methods("GET")
