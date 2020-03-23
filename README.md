@@ -12,5 +12,5 @@
 
 ### Future implementations:
 
-[ ] Two-Factor Authenticator 
+[ ] Email Authentication
 
