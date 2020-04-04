@@ -12,5 +12,6 @@
 
 ### Future implementations:
 
-[ ] Email Authentication
+-- CODE STRUCTURE UPDATE
 
+[ ] Email Authentication
