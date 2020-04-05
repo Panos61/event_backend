@@ -26,10 +26,21 @@ func PostProfile(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// FetchProfile => Returns profile data
+// FetchProfile => Returns profile data linked to a specific user
 func FetchProfile(w http.ResponseWriter, r *http.Request) {
-	var profile models.ProfileSecData
-	db.First(&profile)
+	profile := &models.ProfileSecData{}
+	db.Find(&profile)
+	json.NewEncoder(w).Encode(&profile)
 
+}
+
+// UpdateProfile => Updates profile sec data
+func UpdateProfile(w http.ResponseWriter, r *http.Request) {
+	profile := &models.ProfileSecData{}
+	db.First(&profile)
+	json.NewDecoder(r.Body).Decode(profile)
+	db.Save(&profile)
+	var resp = map[string]interface{}{"status": true, "message": "Profile created"}
+	resp["profile"] = profile
 	json.NewEncoder(w).Encode(&profile)
 }

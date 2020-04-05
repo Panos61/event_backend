@@ -14,19 +14,14 @@ import (
 //Exception struct
 type Exception models.Exception
 
-// JwtVerify Middleware function
+//JwtVerify Middleware function
 func JwtVerify(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		var header = r.Header.Get("Authorization") //Grab the token from the header
+		var header = r.Header.Get("Authorization")
+		token := strings.TrimSpace(header)
 
-		fmt.Println(header)
-		splitHeader := strings.Split(header, "Bearer ")
-
-		token := splitHeader[1]
 		fmt.Println(token)
-
-		fmt.Println(header)
 
 		if header == "" {
 			//Token is missing, returns with error code 403 Unauthorized
@@ -35,6 +30,7 @@ func JwtVerify(next http.Handler) http.Handler {
 			return
 		}
 		tk := &models.Token{}
+		//user := &models.User{}
 
 		_, err := jwt.ParseWithClaims(token, tk, func(token *jwt.Token) (interface{}, error) {
 			return []byte("secret"), nil
@@ -46,7 +42,13 @@ func JwtVerify(next http.Handler) http.Handler {
 			return
 		}
 
+		//fmt.Println(tk.Email)
+
+		json.NewEncoder(w).Encode(tk)
+
 		ctx := context.WithValue(r.Context(), "user", tk)
-		next.ServeHTTP(w, r.WithContext(ctx))
+		r = r.WithContext(ctx)
+		next.ServeHTTP(w, r)
+
 	})
 }

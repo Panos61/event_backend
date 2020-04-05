@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	//"context"
 	"encoding/json"
 	"event_backend/models"
 	"event_backend/utils"
@@ -10,7 +11,6 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -100,7 +100,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 		err := ErrorResponse{
-			Err: "Password Encryption  failed",
+			Err: "Password Encryption failed",
 		}
 		json.NewEncoder(w).Encode(err)
 	}
@@ -115,6 +115,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
 	//json.NewEncoder(w).Encode(createdUser)
 
 	// Simple creds validation
@@ -165,7 +166,7 @@ func FetchUsers(w http.ResponseWriter, r *http.Request) {
 	var users []models.User
 	db.Preload("auth").Find(&users)
 
-	json.NewEncoder(w).Encode(users)
+	//json.NewEncoder(w).Encode(users)
 }
 
 // UpdateUser => Updates User
@@ -196,16 +197,4 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	db.First(&user, id)
 	json.NewEncoder(w).Encode(&user)
-}
-
-// GetLoggedUser => Gets Logged In User with JWT
-func GetLoggedUser(w http.ResponseWriter, r *http.Request) {
-
-	//tk := models.Token{}
-
-	var user models.User
-	db.First(&user)
-
-	json.NewEncoder(w).Encode(&user)
-
 }
