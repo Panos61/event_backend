@@ -45,6 +45,7 @@ func (server *Server) Initialize(dbDriver, dbUser, dbPassword, dbPort, dbHost, d
 	// database migration
 	server.DB.Debug().AutoMigrate(
 		&models.User{},
+		&models.Profile{},
 	)
 
 	server.Router = gin.Default()
