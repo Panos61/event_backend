@@ -9,6 +9,7 @@ Backend for the main ReactJS project with Golang.
 [x] JWT
 
 Future implementations:
+
 -- CODE STRUCTURE UPDATE - DONE
 
 [ ] Email Authentication
