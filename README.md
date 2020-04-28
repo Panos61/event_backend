@@ -8,6 +8,7 @@ Backend for the main ReactJS project with Golang.
 
 [x] JWT
 
+
 Future implementations:
 
 -- CODE STRUCTURE UPDATE - DONE
@@ -18,8 +19,10 @@ Future implementations:
 
 [ ] Delete Account
 
-[ ] Edit Profile
+[ ] Edit Profile -- In development
 
 [ ] Upload Avatar
 
-[ ] Create Event +++
+[ ] Create Event  -- In development
+
+
