@@ -21,8 +21,10 @@ func (s *Server) intializeRoutes() {
 		v1.PUT("/profile", s.initProfile)
 
 		// Events
-		v1.POST("/create-event", s.CreateEvent)
-
+		v1.POST("/create-event", middlewares.TokenAuthMiddleware(), s.CreateEvent)
+		v1.GET("/user_events/:id", s.GetUserEvents)
+		v1.GET("/events/:id", s.GetEvent)
+		v1.GET("/events", s.GetEvents)
 	}
 
 }
