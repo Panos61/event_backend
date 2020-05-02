@@ -11,10 +11,10 @@ import (
 // User struct
 type User struct {
 	ID        uint32    `gorm:"primary_key;auto_increment" json:"id"`
-	Email     string    `gorm:"size:100;not null;unique" json:"email" valid:"email"`
-	Username  string    `gorm:"size:200;not null;unique" json:"username" valid:"(3|13)"`
-	Password  string    `gorm:"size:100;not null;" json:"password"`
-	Gender    string    `gorm:"not null;default: null" json:"gender"`
+	Email     string    `gorm:"size:100;not null;unique" json:"email"`
+	Username  string    `gorm:"size:100;not null;unique" json:"username" `
+	Password  string    `gorm:"size:200;not null;" json:"password"`
+	Gender    string    `gorm:"not null;" json:"gender"`
 	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }

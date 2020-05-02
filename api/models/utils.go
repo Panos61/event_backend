@@ -9,6 +9,7 @@ import (
 
 // FindUsers ..
 func (u *User) FindUsers(db *gorm.DB) (*[]User, error) {
+
 	var err error
 	users := []User{}
 
@@ -19,6 +20,7 @@ func (u *User) FindUsers(db *gorm.DB) (*[]User, error) {
 	}
 
 	return &users, err
+
 }
 
 // FindUserByID ..

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"event_backend/api/auth"
 	"event_backend/api/models"
+	"event_backend/api/security"
 	"io/ioutil"
 	"net/http"
 
@@ -36,14 +37,14 @@ func (server *Server) Login(c *gin.Context) {
 		})
 		return
 	}
-	errorMessages := user.Validate("login")
-	if len(errorMessages) > 0 {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"status":  http.StatusUnprocessableEntity,
-			"message": errorMessages,
-		})
-		return
-	}
+	// errorMessages := user.Validate("login")
+	// if len(errorMessages) > 0 {
+	// 	c.JSON(http.StatusUnprocessableEntity, gin.H{
+	// 		"status":  http.StatusUnprocessableEntity,
+	// 		"message": errorMessages,
+	// 	})
+	// 	return
+	// }
 
 	user.Prepare()
 
@@ -56,12 +57,6 @@ func (server *Server) Login(c *gin.Context) {
 		return
 	}
 
-	// c.JSON(http.StatusOK, gin.H{
-	// 	"status": http.StatusOK,
-	// 	// "user":   userData,
-	// })
-	c.Status(http.StatusOK)
-	//json.NewEncoder(c.Writer).Encode(userData)
 	c.JSON(200, userData)
 }
 
@@ -79,17 +74,17 @@ func (server *Server) SignIn(email, password string) (map[string]interface{}, er
 		return nil, err
 	}
 
-	// err = security.VerifyPassword(user.Password, password)
-	// if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
-	// 	fmt.Println("Error hashing the password", err)
-	// 	return nil, err
-	// }
-
-	errf := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
-	if errf != nil || errf == bcrypt.ErrMismatchedHashAndPassword {
-		fmt.Println("Error bcypt", errf)
+	err = security.VerifyPassword(user.Password, password)
+	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
+		fmt.Println("Error hashing the password", err)
 
 	}
+
+	// errf := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	// if errf != nil || errf == bcrypt.ErrMismatchedHashAndPassword {
+	// 	fmt.Println("Error bcypt", errf)
+	// 	return nil, err
+	// }
 
 	token, err := auth.CreateToken(user.ID)
 	if err != nil {
@@ -98,12 +93,12 @@ func (server *Server) SignIn(email, password string) (map[string]interface{}, er
 	}
 
 	userData["token"] = token
-	// userData["id"] = user.ID
-	// userData["email"] = user.Email
-	// userData["username"] = user.Username
-	// userData["gender"] = user.Gender
-	// userData["password"] = user.Password
-	userData["user"] = user
+	userData["id"] = user.ID
+	userData["email"] = user.Email
+	userData["username"] = user.Username
+	userData["gender"] = user.Gender
+	//userData["password"] = user.Password
+	//userData["user"] = user
 
 	return userData, nil
 
