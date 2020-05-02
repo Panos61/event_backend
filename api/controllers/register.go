@@ -13,7 +13,6 @@ import (
 
 // CreateUser => Creates new user
 func (server *Server) CreateUser(c *gin.Context) {
-	errList = map[string]string{}
 
 	body, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
@@ -90,11 +89,6 @@ func (server *Server) GetUsers(c *gin.Context) {
 			"error":  "Users not found",
 		})
 	}
-
-	// c.JSON(http.StatusOK, gin.H{
-	// 	"status":  http.StatusOK,
-	// 	"message": users,
-	// })
 
 	c.JSON(200, users)
 }
