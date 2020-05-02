@@ -22,12 +22,12 @@ type Events struct {
 	// Date     string `gorm:"not null" json:"date"`
 	// Time     string `gorm:"not null" json:"singleTime"`
 
-	// Comments       string `gorm:"size:300" json:"comments"`
-	// AgeRestriction string `json:"ageRestricted"`
+	Comments string `gorm:"size:300" json:"comments"`
+	//AgeRestriction string `json:"ageRestricted"`
 
 	// Payment string `gorm:"not null" json:"payment"`
 	// Price   string `json:"price"`
-	// Tickets string `gorm:"size:200" json:"tickets"`
+	//Tickets string `gorm:"size:200" json:"tickets"`
 
 	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
