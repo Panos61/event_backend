@@ -8,6 +8,7 @@ Backend for the main ReactJS project with Golang.
 
 [x] JWT
 
+[x] Create Event
 
 Future implementations:
 
@@ -22,7 +23,5 @@ Future implementations:
 [ ] Edit Profile -- In development
 
 [ ] Upload Avatar
-
-[ ] Create Event  -- In development
 
 
