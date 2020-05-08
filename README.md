@@ -1,5 +1,3 @@
-event_backend
-Backend for the main ReactJS project with Golang.
 [x] Added connection to PostgreSQL.
 
 [x] Passwords are now stored in the DB in a hashed form.(Bcrypt)
@@ -13,6 +11,8 @@ Backend for the main ReactJS project with Golang.
 Future implementations:
 
 -- CODE STRUCTURE UPDATE - DONE
+
+[ ] Update/View Events/Like-Comment Events -- In development
 
 [ ] Email Authentication
 
