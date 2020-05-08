@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"event_backend/api/models"
-	"event_backend/api/security"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -33,18 +32,6 @@ func (server *Server) CreateUser(c *gin.Context) {
 		})
 		return
 	}
-
-	// Password Hash and Salt ** BCRYPT
-	pass, err := security.Hash(user.Password)
-	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"status":  http.StatusUnprocessableEntity,
-			"message": "Error hashing password",
-		})
-		return
-	}
-
-	user.Password = string(pass)
 
 	// *** ***
 
