@@ -8,6 +8,8 @@
 
 [x] Create Event
 
+[x] Delete Account
+
 Future implementations:
 
 -- CODE STRUCTURE UPDATE - DONE
@@ -17,8 +19,6 @@ Future implementations:
 [ ] Email Authentication
 
 [ ] Email/Password Update
-
-[ ] Delete Account
 
 [ ] Edit Profile -- In development
 
