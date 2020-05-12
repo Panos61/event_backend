@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"event_backend/api/auth"
+	"event_backend/api/models"
 	"net/http"
 	"strconv"
 
@@ -40,4 +41,30 @@ func (server *Server) DeleteUser(c *gin.Context) {
 		return
 	}
 
+	user := models.User{}
+	_, err = user.DeleteAUser(server.DB, uint32(uid))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  http.StatusNotFound,
+			"message": "Error Finding User",
+		})
+	}
+
+	// Delete user's events
+	events := models.Events{}
+
+	_, err = events.DeleteUserEvents(server.DB, uint32(uid))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status":  http.StatusInternalServerError,
+			"message": "Error Deleting User",
+		})
+		return
+	}
+
+	// If no errors
+	c.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": "User Deleted",
+	})
 }

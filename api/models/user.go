@@ -38,3 +38,14 @@ func (u *User) Prepare() {
 	u.CreatedAt = time.Now()
 	u.UpdatedAt = time.Now()
 }
+
+// DeleteUser => ..
+func (u *User) DeleteAUser(db *gorm.DB, uid uint32) (int64, error) {
+
+	db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).Delete(&User{})
+
+	if db.Error != nil {
+		return 0, db.Error
+	}
+	return db.RowsAffected, nil
+}
