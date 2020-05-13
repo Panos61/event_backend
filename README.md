@@ -12,8 +12,6 @@
 
 Future implementations:
 
--- CODE STRUCTURE UPDATE - DONE
-
 [ ] Email/Password Update  -- In development
 
 [ ] Update/View Events/Like-Comment Events
