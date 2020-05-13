@@ -14,13 +14,13 @@ Future implementations:
 
 -- CODE STRUCTURE UPDATE - DONE
 
-[ ] Update/View Events/Like-Comment Events -- In development
+[ ] Email/Password Update  -- In development
+
+[ ] Update/View Events/Like-Comment Events
 
 [ ] Email Authentication
 
-[ ] Email/Password Update
-
-[ ] Edit Profile -- In development
+[ ] Edit Profile
 
 [ ] Upload Avatar
 
