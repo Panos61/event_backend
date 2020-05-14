@@ -16,6 +16,7 @@ func (s *Server) intializeRoutes() {
 		v1.GET("/users", s.GetUsers)
 		v1.GET("/users/:id", s.GetUserByID)
 		v1.DELETE("/users/:id", middlewares.TokenAuthMiddleware(), s.DeleteUser)
+		v1.PUT("/users/:id", middlewares.TokenAuthMiddleware(), s.UpdatePassword)
 
 		// User Profile
 		v1.PUT("/profile", s.initProfile)

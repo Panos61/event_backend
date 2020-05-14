@@ -2,6 +2,7 @@ package models
 
 import (
 	"html"
+	"log"
 	"strings"
 	"time"
 
@@ -39,7 +40,7 @@ func (u *User) Prepare() {
 	u.UpdatedAt = time.Now()
 }
 
-// DeleteUser => ..
+// DeleteAUser => ..
 func (u *User) DeleteAUser(db *gorm.DB, uid uint32) (int64, error) {
 
 	db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).Delete(&User{})
@@ -49,3 +50,53 @@ func (u *User) DeleteAUser(db *gorm.DB, uid uint32) (int64, error) {
 	}
 	return db.RowsAffected, nil
 }
+
+//UpdateUserPassword => Replaces old user password with new one
+func (u *User) UpdateUserPassword(db *gorm.DB, uid uint32) (*User, error) {
+
+	if u.Password != "" {
+		// Hash the new password
+		err := u.BeforeSave()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Update columns
+		db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).UpdateColumns(
+			map[string]interface{}{
+				"password":   u.Password,
+				"updated_at": time.Now(),
+			},
+		)
+	}
+
+	// If error, return error
+	if db.Error != nil {
+		return &User{}, db.Error
+	}
+
+	err := db.Debug().Model(&User{}).Where("id = ?", uid).Take(&u).Error
+	if err != nil {
+		return &User{}, err
+	}
+
+	return u, nil
+}
+
+//UpdateUserPassword => Replaces old user password with new one
+// func (u *User) UpdateUserPassword(db *gorm.DB, uid uint32) (*User, error){
+// 	if u.Password != "" {
+// 		//hash new password
+// 		err := u.BeforeSave()
+// 		if err != nil {
+// 			log.Fatal(err)
+// 		}
+
+// 		db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).UpdateColumns(
+// 			map[string]interface{}{
+// 				"password": u.Password,
+// 				"update"
+// 			}
+// 		)
+// 	}
+// }
