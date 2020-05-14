@@ -8,19 +8,17 @@
 
 [x] Create Event
 
+[x] Delete Account
+
 Future implementations:
 
--- CODE STRUCTURE UPDATE - DONE
+[ ] Email/Password Update  -- In development
 
-[ ] Update/View Events/Like-Comment Events -- In development
+[ ] Update/View Events/Like-Comment Events
 
 [ ] Email Authentication
 
-[ ] Email/Password Update
-
-[ ] Delete Account
-
-[ ] Edit Profile -- In development
+[ ] Edit Profile
 
 [ ] Upload Avatar
 
