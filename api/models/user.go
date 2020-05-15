@@ -82,21 +82,3 @@ func (u *User) UpdateUserPassword(db *gorm.DB, uid uint32) (*User, error) {
 
 	return u, nil
 }
-
-//UpdateUserPassword => Replaces old user password with new one
-// func (u *User) UpdateUserPassword(db *gorm.DB, uid uint32) (*User, error){
-// 	if u.Password != "" {
-// 		//hash new password
-// 		err := u.BeforeSave()
-// 		if err != nil {
-// 			log.Fatal(err)
-// 		}
-
-// 		db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).UpdateColumns(
-// 			map[string]interface{}{
-// 				"password": u.Password,
-// 				"update"
-// 			}
-// 		)
-// 	}
-// }
