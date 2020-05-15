@@ -10,9 +10,9 @@
 
 [x] Delete Account
 
-Future implementations:
+[x] Email/Password Update
 
-[ ] Email/Password Update  -- In development
+Future implementations:
 
 [ ] Update/View Events/Like-Comment Events
 
