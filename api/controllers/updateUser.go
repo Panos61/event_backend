@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"event_backend/api/auth"
 	"event_backend/api/models"
 	"event_backend/api/security"
 	"io/ioutil"
@@ -29,23 +30,23 @@ func (server *Server) UpdatePassword(c *gin.Context) {
 		return
 	}
 
-	// // Get the user ID from the token
-	// tokenID, err := auth.ExtractTokenID(c.Request)
-	// if err != nil {
-	// 	c.JSON(http.StatusUnauthorized, gin.H{
-	// 		"status":  http.StatusUnauthorized,
-	// 		"message": "Error authenticating user",
-	// 	})
-	// 	return
-	// }
+	// Get the user ID from the token
+	tokenID, err := auth.ExtractTokenID(c.Request)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status":  http.StatusUnauthorized,
+			"message": "Error authenticating user",
+		})
+		return
+	}
 
-	// if tokenID != 0 && tokenID != uint32(uid) {
-	// 	c.JSON(http.StatusUnauthorized, gin.H{
-	// 		"status":  http.StatusUnauthorized,
-	// 		"message": "Unauthorized User",
-	// 	})
-	// 	return
-	// }
+	if tokenID != 0 && tokenID != uint32(uid) {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status":  http.StatusUnauthorized,
+			"message": "Unauthorized User",
+		})
+		return
+	}
 
 	// IF AUTHENTICATION GOES WELL THEN UNMARSHAL BODY
 	body, err := ioutil.ReadAll(c.Request.Body)
