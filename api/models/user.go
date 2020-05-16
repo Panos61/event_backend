@@ -82,3 +82,28 @@ func (u *User) UpdateUserPassword(db *gorm.DB, uid uint32) (*User, error) {
 
 	return u, nil
 }
+
+// UpdateUserEmail => Replaces old email with a new one
+func (u *User) UpdateUserEmail(db *gorm.DB, uid uint32) (*User, error) {
+	if u.Password != "" {
+		// Update Columns
+		db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).UpdateColumns(
+			map[string]interface{}{
+				"email":      u.Email,
+				"updated_at": time.Now(),
+			},
+		)
+	}
+
+	// If error, return error
+	if db.Error != nil {
+		return &User{}, db.Error
+	}
+
+	err := db.Debug().Model(&User{}).Where("id = ?", uid).Take(&u).Error
+	if err != nil {
+		return &User{}, err
+	}
+
+	return u, nil
+}
