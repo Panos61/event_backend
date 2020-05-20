@@ -12,11 +12,11 @@
 
 [x] Email/Password Update
 
+[x] Email Authentication
+
 Future implementations:
 
 [ ] Update/View Events/Like-Comment Events -- in development
-
-[ ] Email Authentication
 
 [ ] Edit Profile
 
