@@ -14,7 +14,7 @@
 
 Future implementations:
 
-[ ] Update/View Events/Like-Comment Events
+[ ] Update/View Events/Like-Comment Events -- in development
 
 [ ] Email Authentication
 
