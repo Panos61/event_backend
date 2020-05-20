@@ -20,6 +20,6 @@ Future implementations:
 
 [ ] Edit Profile
 
-[ ] Upload Avatar
+[ ] Upload Avatar / Files
 
 
