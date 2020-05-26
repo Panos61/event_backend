@@ -114,3 +114,14 @@ func (e *Events) FindEventByID(db *gorm.DB, pid uint64) (*Events, error) {
 
 	return e, nil
 }
+
+// DeleteUserEvents => Delete all user's events
+func (e *Events) DeleteUserEvents(db *gorm.DB, uid uint32) (int64, error) {
+	events := []Events{}
+	db = db.Debug().Model(&Events{}).Where("creator_id = ?", uid).Find(&events).Delete(&events)
+
+	if db.Error != nil {
+		return 0, db.Error
+	}
+	return db.RowsAffected, nil
+}

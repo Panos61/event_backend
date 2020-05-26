@@ -15,6 +15,7 @@ func (s *Server) intializeRoutes() {
 		// Users
 		v1.GET("/users", s.GetUsers)
 		v1.GET("/users/:id", s.GetUserByID)
+		v1.GET("/me", middlewares.TokenAuthMiddleware(), s.GetMe)
 		v1.DELETE("/users/:id", middlewares.TokenAuthMiddleware(), s.DeleteUser)
 		v1.PUT("/users/:id", middlewares.TokenAuthMiddleware(), s.UpdatePassword)
 		v1.PUT("/users-email/:id", middlewares.TokenAuthMiddleware(), s.UpdateEmail)
@@ -27,6 +28,16 @@ func (s *Server) intializeRoutes() {
 		v1.GET("/user_events/:id", s.GetUserEvents)
 		v1.GET("/events/:id", s.GetEvent)
 		v1.GET("/events", s.GetEvents)
+
+		// Events-Types Routes
+		// v1.GET("/music", )
+		// v1.GET("/sports")
+		// v1.GET("/entertainment")
+		// v1.GET("/cinema")
+		// v1.GET("/arts")
+		// v1.GET("/dance")
+		// v1.GET("/kids")
+		// v1.GET("/social_events")
 	}
 
 }

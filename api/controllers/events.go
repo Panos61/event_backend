@@ -92,6 +92,7 @@ func (server *Server) GetEvents(c *gin.Context) {
 	})
 }
 
+// GetEvent => Fetch single Event
 func (server *Server) GetEvent(c *gin.Context) {
 	eventID := c.Param("id")
 	eID, err := strconv.ParseUint(eventID, 10, 64)

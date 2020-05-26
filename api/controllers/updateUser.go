@@ -138,6 +138,7 @@ func (server *Server) UpdatePassword(c *gin.Context) {
 	})
 }
 
+// UpdateEmail **
 func (server *Server) UpdateEmail(c *gin.Context) {
 	// JSON Request Body
 	requestBody := map[string]string{}
