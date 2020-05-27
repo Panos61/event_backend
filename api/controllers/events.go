@@ -92,42 +92,6 @@ func (server *Server) GetEvents(c *gin.Context) {
 	})
 }
 
-// GetMusicEvents **
-func (server *Server) GetMusicEvents(c *gin.Context) {
-	event := models.Events{}
-
-	events, err := event.GetMusic(server.DB)
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"status":  http.StatusNotFound,
-			"message": "Music Events Not Found",
-		})
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"status":  http.StatusOK,
-		"message": events,
-	})
-}
-
-// GetSportEvents **
-func (server *Server) GetSportEvents(c *gin.Context) {
-	event := models.Events{}
-
-	events, err := event.GetSports(server.DB)
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"status":  http.StatusNotFound,
-			"message": "Sport Events Not Found",
-		})
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"status":  http.StatusOK,
-		"message": events,
-	})
-}
-
 // GetEvent => Fetch single Event
 func (server *Server) GetEvent(c *gin.Context) {
 	eventID := c.Param("id")
@@ -177,6 +141,152 @@ func (server *Server) GetUserEvents(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"status":  http.StatusNotFound,
 			"message": "No Event Found",
+		})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": events,
+	})
+}
+
+// ** EVENT CATEGORIES **
+
+// GetMusicEvents **
+func (server *Server) GetMusicEvents(c *gin.Context) {
+	event := models.Events{}
+
+	events, err := event.GetMusic(server.DB)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  http.StatusNotFound,
+			"message": "Music Events Not Found",
+		})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": events,
+	})
+}
+
+// GetSportEvents **
+func (server *Server) GetSportEvents(c *gin.Context) {
+	event := models.Events{}
+
+	events, err := event.GetSports(server.DB)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  http.StatusNotFound,
+			"message": "Sport Events Not Found",
+		})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": events,
+	})
+}
+
+// GetEntertainmentEvents **
+func (server *Server) GetEntertainmentEvents(c *gin.Context) {
+	event := models.Events{}
+
+	events, err := event.GetEnter(server.DB)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  http.StatusNotFound,
+			"message": "Sport Events Not Found",
+		})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": events,
+	})
+}
+
+// GetCinemaEvents **
+func (server *Server) GetCinemaEvents(c *gin.Context) {
+	event := models.Events{}
+
+	events, err := event.GetCinema(server.DB)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  http.StatusNotFound,
+			"message": "Sport Events Not Found",
+		})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": events,
+	})
+}
+
+// GetDanceEvents **
+func (server *Server) GetDanceEvents(c *gin.Context) {
+	event := models.Events{}
+
+	events, err := event.GetDance(server.DB)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  http.StatusNotFound,
+			"message": "Sport Events Not Found",
+		})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": events,
+	})
+}
+
+// GetArtEvents **
+func (server *Server) GetArtEvents(c *gin.Context) {
+	event := models.Events{}
+
+	events, err := event.GetArts(server.DB)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  http.StatusNotFound,
+			"message": "Sport Events Not Found",
+		})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": events,
+	})
+}
+
+// GetKidsEvents **
+func (server *Server) GetKidsEvents(c *gin.Context) {
+	event := models.Events{}
+
+	events, err := event.GetKids(server.DB)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  http.StatusNotFound,
+			"message": "Sport Events Not Found",
+		})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": events,
+	})
+}
+
+// GetSocialEvents **
+func (server *Server) GetSocialEvents(c *gin.Context) {
+	event := models.Events{}
+
+	events, err := event.GetArts(server.DB)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  http.StatusNotFound,
+			"message": "Sport Events Not Found",
 		})
 	}
 
