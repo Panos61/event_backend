@@ -153,3 +153,87 @@ func (e *Events) GetSports(db *gorm.DB) (*[]Events, error) {
 
 	return &events, nil
 }
+
+//GetEnter => Fetches all entertainment evevts
+func (e *Events) GetEnter(db *gorm.DB) (*[]Events, error) {
+	var err error
+	events := []Events{}
+	var category string = "Διασκέδαση"
+
+	err = db.Debug().Model(&Events{}).Where("category = ?", category).Order("created_at desc").Find(&events).Error
+	if err != nil {
+		return &[]Events{}, err
+	}
+
+	return &events, nil
+}
+
+//GetCinema => Fetches all cinema evevts
+func (e *Events) GetCinema(db *gorm.DB) (*[]Events, error) {
+	var err error
+	events := []Events{}
+	var category string = "Σινεμά"
+
+	err = db.Debug().Model(&Events{}).Where("category = ?", category).Order("created_at desc").Find(&events).Error
+	if err != nil {
+		return &[]Events{}, err
+	}
+
+	return &events, nil
+}
+
+//GetArts => Fetches all art evevts
+func (e *Events) GetArts(db *gorm.DB) (*[]Events, error) {
+	var err error
+	events := []Events{}
+	var category string = "Τέχνες"
+
+	err = db.Debug().Model(&Events{}).Where("category = ?", category).Order("created_at desc").Find(&events).Error
+	if err != nil {
+		return &[]Events{}, err
+	}
+
+	return &events, nil
+}
+
+//GetDance => Fetches all dance evevts
+func (e *Events) GetDance(db *gorm.DB) (*[]Events, error) {
+	var err error
+	events := []Events{}
+	var category string = "Χορός"
+
+	err = db.Debug().Model(&Events{}).Where("category = ?", category).Order("created_at desc").Find(&events).Error
+	if err != nil {
+		return &[]Events{}, err
+	}
+
+	return &events, nil
+}
+
+//GetKids => Fetches all kids' evevts
+func (e *Events) GetKids(db *gorm.DB) (*[]Events, error) {
+	var err error
+	events := []Events{}
+	var category string = "Παιδικά"
+
+	err = db.Debug().Model(&Events{}).Where("category = ?", category).Order("created_at desc").Find(&events).Error
+	if err != nil {
+		return &[]Events{}, err
+	}
+
+	return &events, nil
+}
+
+//GetSocial => Fetches all social events
+func (e *Events) GetSocial(db *gorm.DB) (*[]Events, error) {
+	var err error
+	events := []Events{}
+	var category string = "Social_Events"
+
+	err = db.Debug().Model(&Events{}).Where("category = ?", category).Order("created_at desc").Find(&events).Error
+	if err != nil {
+		return &[]Events{}, err
+	}
+
+	return &events, nil
+}
