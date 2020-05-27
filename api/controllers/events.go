@@ -92,6 +92,42 @@ func (server *Server) GetEvents(c *gin.Context) {
 	})
 }
 
+// GetMusicEvents **
+func (server *Server) GetMusicEvents(c *gin.Context) {
+	event := models.Events{}
+
+	events, err := event.GetMusic(server.DB)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  http.StatusNotFound,
+			"message": "Music Events Not Found",
+		})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": events,
+	})
+}
+
+// GetSportEvents **
+func (server *Server) GetSportEvents(c *gin.Context) {
+	event := models.Events{}
+
+	events, err := event.GetSports(server.DB)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  http.StatusNotFound,
+			"message": "Sport Events Not Found",
+		})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": events,
+	})
+}
+
 // GetEvent => Fetch single Event
 func (server *Server) GetEvent(c *gin.Context) {
 	eventID := c.Param("id")

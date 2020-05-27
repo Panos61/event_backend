@@ -16,13 +16,13 @@ type Events struct {
 	ID          uint64 `gorm:"primary_key;auto_increment" json:"id"`
 	Category    string `gorm:"size:25;not null" json:"category"`
 	Title       string `gorm:"size:100;not null" json:"title"`
-	Description string `gorm:"size:1000;not null" json:"description"`
+	Description string `gorm:"not null" json:"description"`
 
 	// DateType string `gorm:"size:15;not null" json:"dateType"`
 	// Date     string `gorm:"not null" json:"date"`
 	// Time     string `gorm:"not null" json:"singleTime"`
 
-	Comments string `gorm:"size:300" json:"comments"`
+	Comments string `gorm:"size:200" json:"comments"`
 	//AgeRestriction string `json:"ageRestricted"`
 
 	// Payment string `gorm:"not null" json:"payment"`
@@ -124,4 +124,32 @@ func (e *Events) DeleteUserEvents(db *gorm.DB, uid uint32) (int64, error) {
 		return 0, db.Error
 	}
 	return db.RowsAffected, nil
+}
+
+// GetMusic => Fetches all music events
+func (e *Events) GetMusic(db *gorm.DB) (*[]Events, error) {
+	var err error
+	events := []Events{}
+	var category string = "Μουσική"
+
+	err = db.Debug().Model(&Events{}).Where("category = ?", category).Order("created_at desc").Find(&events).Error
+	if err != nil {
+		return &[]Events{}, err
+	}
+
+	return &events, nil
+}
+
+//GetSports => Fetches all sport evevts
+func (e *Events) GetSports(db *gorm.DB) (*[]Events, error) {
+	var err error
+	events := []Events{}
+	var category string = "Αθλητισμός"
+
+	err = db.Debug().Model(&Events{}).Where("category = ?", category).Order("created_at desc").Find(&events).Error
+	if err != nil {
+		return &[]Events{}, err
+	}
+
+	return &events, nil
 }

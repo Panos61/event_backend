@@ -30,8 +30,8 @@ func (s *Server) intializeRoutes() {
 		v1.GET("/events", s.GetEvents)
 
 		// Events-Types Routes
-		// v1.GET("/music", )
-		// v1.GET("/sports")
+		v1.GET("/music", s.GetMusicEvents)
+		v1.GET("/sports", s.GetSportEvents)
 		// v1.GET("/entertainment")
 		// v1.GET("/cinema")
 		// v1.GET("/arts")
