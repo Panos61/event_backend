@@ -23,21 +23,17 @@ type Server struct {
 var errList = make(map[string]string)
 
 // Initialize => Initialized DB connection
-func (server *Server) Initialize(dbDriver, dbUser, dbPassword, dbPort, dbHost, dbName string) {
+func (server *Server) Initialize(dbUser, dbPassword, dbPort, dbHost, dbName string) {
 
 	var err error
 
-	if dbDriver == "postgres" {
-		DBURL := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, dbPort, dbUser, dbName, dbPassword)
-		server.DB, err = gorm.Open(dbDriver, DBURL)
-		if err != nil {
-			fmt.Printf("Cannot connect to %s database", dbDriver)
-			log.Fatal("This is the error connecting to postgres:", err)
-		} else {
-			fmt.Printf("We are connected to the %s database", dbDriver)
-		}
+	DBURL := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, dbPort, dbUser, dbName, dbPassword)
+	server.DB, err = gorm.Open("postgres", DBURL)
+	if err != nil {
+		fmt.Printf("Cannot connect to postgres database")
+		log.Fatal("This is the error connecting to postgres:", err)
 	} else {
-		fmt.Println("Unknown Driver")
+		fmt.Printf("We are connected to the postgres database")
 	}
 
 	validations.RegisterCallbacks(server.DB)
