@@ -17,17 +17,15 @@ type Events struct {
 	Category    string `gorm:"size:25;not null" json:"category"`
 	Title       string `gorm:"size:100;not null" json:"title"`
 	Description string `gorm:"not null" json:"description"`
+	Avatar      string `gorm:"not null" json:"avatar"`
 
-	// DateType string `gorm:"size:15;not null" json:"dateType"`
-	// Date     string `gorm:"not null" json:"date"`
-	// Time     string `gorm:"not null" json:"singleTime"`
+	DateType string `gorm:"size: 30;not null" json:"dateType"`
+	Date     string `gorm:"size: 100;not null" json:"date"`
+	Time     string `gorm:"size: 100;not null" json:"singleTime"`
 
-	Comments string `gorm:"size:200" json:"comments"`
+	Comments   string `gorm:"size:200" json:"comments"`
+	URLYoutube string `gorm:"size:200" json:"urlYoutube"`
 	//AgeRestriction string `json:"ageRestricted"`
-
-	// Payment string `gorm:"not null" json:"payment"`
-	// Price   string `json:"price"`
-	//Tickets string `gorm:"size:200" json:"tickets"`
 
 	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
