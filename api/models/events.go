@@ -19,6 +19,10 @@ type Events struct {
 	Description string `gorm:"not null" json:"description"`
 	Avatar      string `gorm:"not null" json:"avatar"`
 
+	City    string `gorm:"size: 40;not null" json:"city"`
+	Address string `gorm:"size: 50;not null" json:"address"`
+	Place   string `gorm:"size: 45;not null" json:"place"`
+
 	DateType string `gorm:"size: 30;not null" json:"dateType"`
 	Date     string `gorm:"size: 100;not null" json:"date"`
 	Time     string `gorm:"size: 100;not null" json:"singleTime"`
