@@ -41,7 +41,7 @@ func (server *Server) Initialize(dbUser, dbPassword, dbPort, dbHost, dbName stri
 	// database migration
 	server.DB.Debug().AutoMigrate(
 		&models.User{},
-		&models.Profile{},
+		&models.Profiles{},
 		&models.Events{},
 	)
 

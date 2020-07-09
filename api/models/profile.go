@@ -1,67 +1,78 @@
 package models
 
 import (
-	"errors"
-	"html"
-	"strings"
-	"time"
-
 	"github.com/jinzhu/gorm"
 )
 
-// Profile struct
-type Profile struct {
-	ID           uint32    `gorm:"primary_key;auto_increment" json:"id"`
-	Nickname     string    `gorm:"type:varchar(20)" json:"name" valid:"length(0|13)"`
-	Introduction string    `gorm:"type:varchar(200)" json:"introduction" valid:"length(0|150)"`
-	Age          string    `json:"age" valid:"int"`
-	CreatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
-	User         User      `json:"user"`
-	UserID       uint32    `gorm:"not null" json:"user_id"`
+// Profiles struct
+type Profiles struct {
+	// Owner of the profile => UserID
+	UserID uint32 `gorm:"not null" json:"user_id"`
+	User   User   `json:"user"`
+
+	ID           uint64 `gorm:"primary_key;auto_increment" json:"id"`
+	FirstName    string `gorm:"type:varchar(45)" json:"firstName" valid:"length(0|22)"`
+	LastName     string `gorm:"type:varchar(45)" json:"lastName" valid:"length(0|22)"`
+	Introduction string `gorm:"type:varchar(200)" json:"introduction" valid:"length(0|150)"`
+	Age          string `gorm:"type:int" json:"age" valid:"int"`
 }
 
-// SaveProfile => Inserts new query in DB
-func (u *Profile) SaveProfile(db *gorm.DB) (*Profile, error) {
+// SaveProfile => Saves Profile Data into DB
+func (p *Profiles) SaveProfile(db *gorm.DB) (*Profiles, error) {
 	var err error
-	err = db.Debug().Create(&u).Error
+	err = db.Debug().Model(&Profiles{}).Create(&p).Error
 
 	if err != nil {
-		return &Profile{}, err
+		return &Profiles{}, err
 	}
 
-	// Asign User as the owner of the profile
-	if u.ID != 0 {
-		err = db.Debug().Model(&User{}).Where("id = ?", u.UserID).Take(&u.User).Error
+	// Assign User as the Profile owner.
+	if p.ID != 0 {
+		err = db.Debug().Model(&User{}).Where("id = ?", p.UserID).Take(&p.User).Error
 		if err != nil {
-			return &Profile{}, err
+			return &Profiles{}, err
 		}
 	}
 
-	return u, nil
+	return p, nil
 }
 
-// Prepare //
-func (u *Profile) Prepare() {
-	u.Nickname = html.EscapeString(strings.TrimSpace(u.Nickname))
-	u.Introduction = html.EscapeString(strings.TrimSpace(u.Introduction))
-	//u.Age = html.EscapeString(strings.TrimSpace(u.Age))
-	u.CreatedAt = time.Now()
-	u.UpdatedAt = time.Now()
-}
-
-// FindProfileByID => ..
-func (u *Profile) FindProfileByID(db *gorm.DB, proID uint32) (*Profile, error) {
+// FindAllProfiles => Get all profiles stored in DB
+func (p *Profiles) FindAllProfiles(db *gorm.DB) (*[]Profiles, error) {
 	var err error
-	err = db.Debug().Model(Profile{}).Where("id = ?", proID).Take(&u).Error
+	profiles := []Profiles{}
+	err = db.Debug().Model(&Profiles{}).Order("name DESC").Find(&profiles).Error
 
 	if err != nil {
-		return &Profile{}, err
+		return &[]Profiles{}, err
 	}
 
-	if gorm.IsRecordNotFoundError(err) {
-		return &Profile{}, errors.New("Profile Not Found")
+	if len(profiles) > 0 {
+		for i, _ := range profiles {
+			err := db.Debug().Model(&User{}).Where("id = ?", profiles[i].UserID).Take(&profiles[i].User).Error
+			if err != nil {
+				return &[]Profiles{}, err
+			}
+		}
+	}
+	return &profiles, nil
+}
+
+//FindProfileByID => Get profile based on ID
+func (p *Profiles) FindProfileByID(db *gorm.DB, pid uint64) (*Profiles, error) {
+	var err error
+
+	err = db.Debug().Model(&Events{}).Where("id = ?", pid).Take(&p).Error
+	if err != nil {
+		return &Profiles{}, err
 	}
 
-	return u, nil
+	if p.ID != 0 {
+		err = db.Debug().Model(&Profiles{}).Where("id = ?", p.UserID).Take(&p.User).Error
+		if err != nil {
+			return &Profiles{}, err
+		}
+	}
+
+	return p, nil
 }
