@@ -37,6 +37,29 @@ func (p *Profiles) SaveProfile(db *gorm.DB) (*Profiles, error) {
 	return p, nil
 }
 
+// UpdateProfile =>..
+func (p *Profiles) UpdateProfile(db *gorm.DB, uid uint32) (*Profiles, error) {
+	db = db.Debug().Model(&Profiles{}).Where("id = ?", uid).Take(&Profiles{}).UpdateColumns(
+		map[string]interface{}{
+			"firstName":    p.FirstName,
+			"lastName":     p.LastName,
+			"introduction": p.Introduction,
+			"age":          p.Age,
+		},
+	)
+
+	if db.Error != nil {
+		return &Profiles{}, db.Error
+	}
+
+	err := db.Debug().Model(&Profiles{}).Where("id = ?", uid).Take(&p).Error
+	if err != nil {
+		return &Profiles{}, err
+	}
+
+	return p, nil
+}
+
 // FindAllProfiles => Get all profiles stored in DB
 func (p *Profiles) FindAllProfiles(db *gorm.DB) (*[]Profiles, error) {
 	var err error

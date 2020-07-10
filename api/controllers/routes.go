@@ -21,7 +21,7 @@ func (s *Server) intializeRoutes() {
 		v1.PUT("/users-email/:id", middlewares.TokenAuthMiddleware(), s.UpdateEmail)
 
 		// User Profile
-		v1.PUT("/profile", s.initProfile)
+		v1.PUT("/profile/:id", middlewares.TokenAuthMiddleware(), s.updateProfileData)
 
 		// Events
 		v1.POST("/create-event", middlewares.TokenAuthMiddleware(), s.CreateEvent)
