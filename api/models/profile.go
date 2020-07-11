@@ -15,8 +15,10 @@ type Profiles struct {
 	//ID           uint64    `json:"id"` //gorm:"primary_key;auto_increment"
 	FirstName    string    `gorm:"type:varchar(45)" json:"firstName" valid:"length(0|22), optional"`
 	LastName     string    `gorm:"type:varchar(45)" json:"lastName" valid:"length(0|22), optional"`
-	Introduction string    `gorm:"type:varchar(200)" json:"introduction" valid:"length(0|150), optional"`
+	Introduction string    `gorm:"type:varchar(300)" json:"introduction" valid:"length(0|250), optional"`
 	Age          string    `gorm:"type:varchar(10)" json:"age" valid:"int, optional"`
+	Location     string    `gorm:"type:varchar(40)" json:"location" valid:"length(0|40), optional"`
+	SharedLink   string    `gorm:"type:varchar(100)" json:"sharedLink" valid:"optional"`
 	UpdatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at" valid:"optional"`
 }
 
@@ -45,7 +47,7 @@ func (p *Profiles) UpdateProfile(db *gorm.DB) (*Profiles, error) {
 	var err error
 
 	if p.UserID != 0 {
-		err = db.Debug().Model(&Profiles{}).Where("user_id = ?", p.UserID).Updates(Profiles{FirstName: p.FirstName, LastName: p.LastName, Introduction: p.Introduction, Age: p.Age, UpdatedAt: time.Now()}).Error
+		err = db.Debug().Model(&Profiles{}).Where("user_id = ?", p.UserID).Updates(Profiles{FirstName: p.FirstName, LastName: p.LastName, Introduction: p.Introduction, Age: p.Age, Location: p.Location, SharedLink: p.SharedLink, UpdatedAt: time.Now()}).Error
 		if err != nil {
 			return &Profiles{}, err
 		}
