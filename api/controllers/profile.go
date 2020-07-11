@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -96,6 +97,31 @@ func (server *Server) UpdateProfileData(c *gin.Context) {
 
 }
 
+// GetMyProfile => Fetch my profile on request
+func (server *Server) GetMyProfile(c *gin.Context) {
+	uid, err := auth.ExtractTokenID(c.Request)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status":  http.StatusUnauthorized,
+			"message": "Unauthorized",
+		})
+		return
+	}
+
+	profile := models.Profiles{}
+
+	profileSelected, err := profile.FindProfileByID(server.DB, uint64(uid))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  http.StatusNotFound,
+			"message": "User not found",
+		})
+		return
+	}
+
+	c.JSON(200, profileSelected)
+}
+
 //GetProfile => Get A Specific Profile
 // func (server *Server) GetProfile(c *gin.Context) {
 // 	profileID := c.Param("id")
@@ -125,3 +151,31 @@ func (server *Server) UpdateProfileData(c *gin.Context) {
 // 		"message": profileReceived,
 // 	})
 // }
+
+// GetProfileByID => Get specific profile based on ID
+func (server *Server) GetProfileByID(c *gin.Context) {
+
+	profileID := c.Param("user_id")
+
+	pid, err := strconv.ParseInt(profileID, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  http.StatusBadRequest,
+			"message": "Profile Not Found.",
+		})
+		return
+	}
+	profile := models.Profiles{}
+
+	profileSelected, err := profile.FindProfileByID(server.DB, uint64(pid))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  http.StatusNotFound,
+			"message": "Profile Not Found.",
+		})
+		return
+	}
+
+	c.JSON(200, profileSelected)
+
+}

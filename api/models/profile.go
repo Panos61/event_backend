@@ -83,20 +83,20 @@ func (p *Profiles) UpdateProfile(db *gorm.DB) (*Profiles, error) {
 // }
 
 //FindProfileByID => Get profile based on ID
-// func (p *Profiles) FindProfileByID(db *gorm.DB, pid uint64) (*Profiles, error) {
-// 	var err error
+func (p *Profiles) FindProfileByID(db *gorm.DB, pid uint64) (*Profiles, error) {
+	var err error
 
-// 	err = db.Debug().Model(&Events{}).Where("id = ?", pid).Take(&p).Error
-// 	if err != nil {
-// 		return &Profiles{}, err
-// 	}
+	err = db.Debug().Model(&Profiles{}).Where("user_id = ?", pid).Take(&p).Error
+	if err != nil {
+		return &Profiles{}, err
+	}
 
-// 	if p.ID != 0 {
-// 		err = db.Debug().Model(&Profiles{}).Where("id = ?", p.UserID).Take(&p.User).Error
-// 		if err != nil {
-// 			return &Profiles{}, err
-// 		}
-// 	}
+	if p.UserID != 0 {
+		err = db.Debug().Model(&Profiles{}).Where("id = ?", p.UserID).Take(&p.User).Error
+		if err != nil {
+			return &Profiles{}, err
+		}
+	}
 
-// 	return p, nil
-// }
+	return p, nil
+}
