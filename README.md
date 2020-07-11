@@ -14,11 +14,13 @@
 
 [x] Email Authentication
 
+[x] Edit Profile
+
 Future implementations:
 
 [ ] Update/View Events/Like-Comment Events -- in development
 
-[ ] Edit Profile
+[ ] Upload Posts, Follow People, Comment Posts
 
 [ ] Upload Avatar / Files
 
