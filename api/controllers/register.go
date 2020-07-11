@@ -6,16 +6,11 @@ import (
 
 	"event_backend/api/auth"
 	"event_backend/api/models"
-	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sendgrid/sendgrid-go"
-	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
 
 // CreateUser => Creates new user
@@ -47,6 +42,7 @@ func (server *Server) CreateUser(c *gin.Context) {
 
 	// Insert user into DB
 	userCreated, err := user.SaveUser(server.DB)
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status":  http.StatusInternalServerError,
@@ -65,22 +61,6 @@ func (server *Server) CreateUser(c *gin.Context) {
 
 	// Send Welcome Email to the user
 	//confirm, err := mail.SendMail.SendWelcomeMessage(user.Email, os.Getenv("SENDGRID_FROM"), user.Email, os.Getenv("SENDGRID_API_KEY"), os.Getenv("APP_ENV"))
-
-	from := mail.NewEmail("Example User", "eventparkgr@gmail.com")
-	subject := "Sending with SendGrid is Fun"
-	to := mail.NewEmail("Example User", "panagiwtis.orovas@gmail.com")
-	plainTextContent := "and easy to do anywhere, even with Go"
-	htmlContent := "<strong>and easy to do anywhere, even with Go</strong>"
-	message := mail.NewSingleEmail(from, subject, to, plainTextContent, htmlContent)
-	client := sendgrid.NewSendClient(os.Getenv("SENDGRID_API_KEY"))
-	response, err := client.Send(message)
-	if err != nil {
-		log.Println(err)
-	} else {
-		fmt.Println(response.StatusCode)
-		fmt.Println(response.Body)
-		fmt.Println(response.Headers)
-	}
 
 	c.JSON(http.StatusCreated, gin.H{
 		"status":   http.StatusCreated,
