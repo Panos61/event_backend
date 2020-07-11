@@ -114,8 +114,6 @@ func (server *Server) GetMe(c *gin.Context) {
 // GetUserByID => ..
 func (server *Server) GetUserByID(c *gin.Context) {
 
-	errList = make(map[string]string)
-
 	userID := c.Param("id")
 
 	uid, err := strconv.ParseInt(userID, 10, 32)
