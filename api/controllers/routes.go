@@ -39,6 +39,10 @@ func (s *Server) intializeRoutes() {
 		v1.GET("/dance", s.GetDanceEvents)
 		v1.GET("/kids", s.GetKidsEvents)
 		v1.GET("/social_events", s.GetSocialEvents)
+
+		// NewsFeed Posts
+		v1.POST("/newsfeed", middlewares.TokenAuthMiddleware(), s.CreatePost)
+		v1.GET("/newsfeed", middlewares.TokenAuthMiddleware(), s.GetPosts)
 	}
 
 }
