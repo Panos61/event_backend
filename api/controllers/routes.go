@@ -23,6 +23,7 @@ func (s *Server) intializeRoutes() {
 		// User Profile
 		v1.PUT("/profile/:id", middlewares.TokenAuthMiddleware(), s.UpdateProfileData)
 		v1.GET("/myProfile", middlewares.TokenAuthMiddleware(), s.GetMyProfile)
+		//v1.GET("/profile/:id", middlewares.TokenAuthMiddleware(), s.GetMusicEvents)
 
 		// Events
 		v1.POST("/create-event", middlewares.TokenAuthMiddleware(), s.CreateEvent)

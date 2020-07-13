@@ -61,11 +61,9 @@ func (e *Events) FindAllEvents(db *gorm.DB) (*[]Events, error) {
 	var err error
 	events := []Events{}
 	err = db.Debug().Model(&Events{}).Limit(100).Order("created_at desc").Find(&events).Error
-
 	if err != nil {
 		return &[]Events{}, err
 	}
-
 	if len(events) > 0 {
 		for i, _ := range events {
 			err := db.Debug().Model(&User{}).Where("id = ?", events[i].CreatorID).Take(&events[i].Creator).Error
