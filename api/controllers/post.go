@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CreatePost => ..
 func (server *Server) CreatePost(c *gin.Context) {
 
 	// Read Data
@@ -62,14 +63,14 @@ func (server *Server) CreatePost(c *gin.Context) {
 	post.Prepare()
 
 	// Error Validation
-	errorVal := post.Validate()
-	if len(errorVal) > 0 {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"status":  http.StatusUnprocessableEntity,
-			"message": "Unprocessable Entity",
-		})
-		return
-	}
+	// errorVal := post.Validate()
+	// if len(errorVal) > 0 {
+	// 	c.JSON(http.StatusUnprocessableEntity, gin.H{
+	// 		"status":  http.StatusUnprocessableEntity,
+	// 		"message": "Unprocessable Entity",
+	// 	})
+	// 	return
+	// }
 
 }
 

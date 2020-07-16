@@ -1,7 +1,6 @@
 package models
 
 import (
-	"errors"
 	"html"
 	"strings"
 	"time"
@@ -13,7 +12,7 @@ import (
 type Post struct {
 	// CreatorID
 	AuthorID uint32 `gorm:"not null" json:"author_id"`
-	Author   User   `json:"creator"`
+	Author   User   `json:"author"`
 
 	// * **
 	ID        uint64    `gorm:"primary_key;auto_increment" json:"id"`
@@ -29,21 +28,21 @@ func (p *Post) Prepare() {
 	p.UpdatedAt = time.Now()
 }
 
-func (p *Post) Validate() map[string]string {
-	var err error
-	var errorMessages = make(map[string]string)
+// func (p *Post) Validate() map[string]string {
+// 	var err error
+// 	var errorMessages = make(map[string]string)
 
-	if p.Content == "" {
-		err = errors.New("Required Content")
-		errorMessages["Required_content"] = err.Error()
-	}
+// 	if p.Content == "" {
+// 		err = errors.New("Required Content")
+// 		errorMessages["Required_content"] = err.Error()
+// 	}
 
-	if p.AuthorID < 1 {
-		err = errors.New("Required Author")
-		errorMessages["Required_author"] = err.Error()
-	}
-	return errorMessages
-}
+// 	if p.AuthorID < 1 {
+// 		err = errors.New("Required Author")
+// 		errorMessages["Required_author"] = err.Error()
+// 	}
+// 	return errorMessages
+// }
 
 func (p *Post) SavePost(db *gorm.DB) (*Post, error) {
 	var err error
@@ -53,7 +52,7 @@ func (p *Post) SavePost(db *gorm.DB) (*Post, error) {
 	}
 
 	if p.ID != 0 {
-		err = db.Debug().Model(&User{}).Where("id = ?", p.AuthorID).Error
+		err = db.Debug().Model(&User{}).Where("id = ?", p.AuthorID).Take(&p.Author).Error
 		if err != nil {
 			return &Post{}, err
 		}
