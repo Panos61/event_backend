@@ -44,6 +44,11 @@ func (s *Server) intializeRoutes() {
 		// NewsFeed Posts
 		v1.POST("/posts", middlewares.TokenAuthMiddleware(), s.CreatePost)
 		v1.GET("/posts", middlewares.TokenAuthMiddleware(), s.GetPosts)
+
+		// Post Upvotes
+		v1.GET("/upvotes", s.GetUpvotes)
+		v1.POST("/upvotes/:id", middlewares.TokenAuthMiddleware(), s.UpvotePost)
+		v1.DELETE("/upvotes/:id", middlewares.TokenAuthMiddleware(), s.RemoveUpvote)
 	}
 
 }

@@ -74,6 +74,7 @@ func (server *Server) CreatePost(c *gin.Context) {
 
 }
 
+// GetPosts => Gets All Posts from the DB
 func (server *Server) GetPosts(c *gin.Context) {
 	post := models.Post{}
 
