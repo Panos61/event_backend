@@ -18,7 +18,7 @@ func (server *Server) UpvotePost(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  http.StatusBadRequest,
-			"message": "Invalid Request.",
+			"message": "Invalid Request #1.",
 		})
 		return
 	}
@@ -157,7 +157,7 @@ func (server *Server) RemoveUpvote(c *gin.Context) {
 		return
 	}
 
-	// removet the upvote
+	// remove the upvote
 	_, err = upvote.DeleteUpvote(server.DB)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
