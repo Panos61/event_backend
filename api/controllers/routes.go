@@ -49,6 +49,10 @@ func (s *Server) intializeRoutes() {
 		v1.GET("/upvotes", s.GetUpvotes)
 		v1.POST("/upvotes/:id", middlewares.TokenAuthMiddleware(), s.UpvotePost)
 		v1.DELETE("/upvotes/:id", middlewares.TokenAuthMiddleware(), s.RemoveUpvote)
+
+		// Events using city param
+		v1.GET("/location_events/:city", s.FetchCityData)
+
 	}
 
 }
