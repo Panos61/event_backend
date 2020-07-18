@@ -16,11 +16,12 @@
 
 [x] Edit Profile
 
+[x] Upload Posts
+
+
 Future implementations:
 
-[ ] Update/View Events/Like-Comment Events -- in development
-
-[ ] Upload Posts, Follow People, Comment Posts
+[ ] Follow People, Comment Posts
 
 [ ] Upload Avatar / Files
 
