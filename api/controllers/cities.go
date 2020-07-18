@@ -10,6 +10,7 @@ import (
 // FetchCityData => Fetch data from a specific city based on frontend url params
 func (server *Server) FetchCityData(c *gin.Context) {
 	eventParam := c.Param("city")
+	//eventParam = "grevena"
 
 	event := models.Events{}
 	events, err := event.CityEvents(server.DB, string(eventParam))
