@@ -14,7 +14,7 @@ func (e *Events) CityEvents(db *gorm.DB, city string) (*[]Events, error) {
 
 	if len(events) > 0 {
 		for i, _ := range events {
-			err := db.Debug().Model(&Events{}).Where("city = ?", events[i].City).Take(&events).Error
+			err := db.Debug().Model(&Events{}).Where("city = ?", events[i].City).Take(&events[i]).Error
 			if err != nil {
 				return &[]Events{}, err
 			}
