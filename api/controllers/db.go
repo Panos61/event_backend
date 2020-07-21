@@ -45,6 +45,7 @@ func (server *Server) Initialize(dbUser, dbPassword, dbPort, dbHost, dbName stri
 		&models.Events{},
 		&models.Post{},
 		&models.Upvote{},
+		&models.Event_Comment{},
 	)
 
 	server.Router = gin.Default()
