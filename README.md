@@ -1,3 +1,6 @@
+-> Technologies in this repo:
+  -Go, Gin Gonic Framework, PostgreSQL
+
 [x] Added connection to PostgreSQL.
 
 [x] Passwords are now stored in the DB in a hashed form.(Bcrypt)
@@ -17,12 +20,4 @@
 [x] Edit Profile
 
 [x] Upload Posts
-
-
-Future implementations:
-
-[ ] Follow People, Comment Posts
-
-[ ] Upload Avatar / Files
-
 
